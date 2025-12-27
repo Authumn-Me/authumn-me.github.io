@@ -1,3 +1,4 @@
 .post-content img {
   cursor: zoom-in;
+  image-rendering: pixelated;
 }
