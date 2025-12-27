@@ -1,5 +1,5 @@
 .post-content img {
   cursor: zoom-in;
-  image-rendering: pixelated;
+  -webkit-font-smoothing: auto;
 }
 
