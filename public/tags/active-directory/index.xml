@@ -6,23 +6,23 @@
     <description>Recent content in Active-Directory on  </description>
     <generator>Hugo -- 0.153.2</generator>
     <language>nl-be</language>
-    <lastBuildDate>Sat, 27 Dec 2025 19:33:53 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 27 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/active-directory/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks</title>
-      <link>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</link>
-      <pubDate>Sat, 27 Dec 2025 19:33:53 +0100</pubDate>
-      <guid>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</guid>
-      <description>&lt;p&gt;Windows networks often operate primarily on IPv4, yet IPv6 remains enabled and active on nearly all Windows systems by default. Even in environments where IPv6 is not intentionally deployed, Windows continues to search for configuration sources that provide IPv6 parameters. This behaviour introduces an attack surface that is frequently underestimated: DHCPv6 poisoning.&lt;/p&gt;
-&lt;p&gt;This technique has been known in the security community for years and continues to appear in modern assessments. Evidence collected for this blog uses mitm6 to demonstrate how easily Windows clients can be influenced when IPv6 behaviour is not monitored or controlled.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>LLMNR NBT NS and MDNS Legacy Name Resolution Protocols That Open the Door to Credential Exposure</title>
+      <title>LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure</title>
       <link>http://localhost:1313/blogs/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/</link>
-      <pubDate>Sat, 27 Dec 2025 19:33:53 +0100</pubDate>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/blogs/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/</guid>
       <description>&lt;p&gt;Windows environments rely on several name resolution mechanisms to locate resources when DNS queries fail or when systems operate in mixed or unmanaged networks. Among these mechanisms are LLMNR (Link-Local Multicast Name Resolution), NBT-NS (NetBIOS Name Service) and mDNS (Multicast DNS). Although created to support small or misconfigured networks, these protocols continue to operate silently in many modern enterprise environments.&lt;/p&gt;
 &lt;p&gt;Their design introduces predictable weaknesses. All three protocols accept responses from any device on the local network segment. This behaviour creates conditions for credential interception when a system requests a name that cannot be resolved through DNS. For this reason, the protocols have long been associated with credential exposure and are frequently observed in security assessments.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks</title>
+      <link>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</link>
+      <pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</guid>
+      <description>&lt;p&gt;Windows networks often operate primarily on IPv4, yet IPv6 remains enabled and active on nearly all Windows systems by default. Even in environments where IPv6 is not intentionally deployed, Windows continues to search for configuration sources that provide IPv6 parameters. This behaviour introduces an attack surface that is frequently underestimated: DHCPv6 poisoning.&lt;/p&gt;
+&lt;p&gt;This technique has been known in the security community for years and continues to appear in modern assessments. Evidence collected for this blog uses mitm6 to demonstrate how easily Windows clients can be influenced when IPv6 behaviour is not monitored or controlled.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
