@@ -24,7 +24,3 @@ theme = "PaperMod"
     name = "Tags"
     url = "/tags/"
     weight = 3
-  [[menu.main]]
-    name = "Archief"
-    url = "/archives/"
-    weight = 4
