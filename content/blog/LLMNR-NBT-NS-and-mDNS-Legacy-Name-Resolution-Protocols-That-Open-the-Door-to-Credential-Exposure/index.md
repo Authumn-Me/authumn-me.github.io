@@ -8,7 +8,7 @@ cover:
   image: "DnsPosioningLogo.png"
   relative: true
   hiddenInSingle: true
-  responsiveImages: true
+  responsiveImages: false
 
 ---
 

@@ -8,7 +8,7 @@ cover:
   image: "Cover.png"
   relative: true
   hiddenInSingle: true
-  responsiveImages: true
+  responsiveImages: false
 
 ---
 

@@ -8,7 +8,7 @@ cover:
   alt: "RDP bitmap cache artefacts"
   relative: true
   hiddenInSingle: true
-  responsiveImages: true
+  responsiveImages: false
 
 ---
 
