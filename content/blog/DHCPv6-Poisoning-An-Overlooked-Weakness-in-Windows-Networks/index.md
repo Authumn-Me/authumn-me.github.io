@@ -7,7 +7,7 @@ draft: false
 cover:
   image: "Cover.png"
   relative: true
-  hiddenInSingle: true
+  hiddenInSingle: false
   responsiveImages: false
 
 ---
