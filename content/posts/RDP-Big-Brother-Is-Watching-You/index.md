@@ -1,6 +1,6 @@
 ---
 title: "RDP - Big Brother is watching"
-date: 2025-01-01
+date: 2025-12-09
 tags: ["rdp", "forensics", "windows", "security"]
 draft: false
 ---
