@@ -3,3 +3,21 @@
   -webkit-font-smoothing: auto;
 }
 
+.header {
+  align-items: center;
+}
+
+.main {
+  padding-top: 0;
+}
+
+.header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.header .logo a img {
+  height: 200px;         
+  width: auto;
+  transform: translateY(25px);
+}

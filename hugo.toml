@@ -1,6 +1,6 @@
 baseURL = "https://authumn-me.github.io/"
 languageCode = "nl-be"
-title = "Authumns blog"
+title = " "
 theme = "PaperMod"
 
 [params]
@@ -8,6 +8,8 @@ theme = "PaperMod"
   ShowReadingTime = true
   ShowPostNavLinks = true
   ShowCodeCopyButtons = true
+  label.icon = "/images/logo.png"
+  label.iconHeight = 152
 
 [menu]
   [[menu.main]]
