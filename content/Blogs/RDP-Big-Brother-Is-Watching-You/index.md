@@ -3,6 +3,13 @@ title: "RDP - Big Brother is watching"
 date: 2025-12-09
 tags: ["rdp", "forensics", "windows", "security"]
 draft: false
+cover:
+  image: "cover.png"
+  alt: "RDP bitmap cache artefacts"
+  relative: true
+  hiddenInSingle: true
+  responsiveImages: true
+
 ---
 
 Remote Desktop has been a standard tool for system administrators and anyone who needs to manage a server or workstation from a distance for many years. During a session far more happens behind the scenes than most people realise. Windows quietly stores small fragments of the remote screen, a mechanism known as the RDP Bitmap Cache.
