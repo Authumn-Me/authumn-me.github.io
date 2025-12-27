@@ -1,7 +1,7 @@
 ---
 title: "RDP - Big Brother is watching"
 date: 2025-12-09
-tags: ["rdp", "forensics", "windows", "security"]
+tags: ["rdp", "forensics", "windows", "security", "active directory"]
 draft: false
 cover:
   image: "cover.png"
