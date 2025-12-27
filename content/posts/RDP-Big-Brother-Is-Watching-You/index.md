@@ -12,6 +12,7 @@ Many users assume that once an RDP session is closed, anything that appeared on 
 
 This technique has been known in the security community for a long time. The process can be reproduced with publicly available tools, which demonstrates how much information can be recovered long after the remote session has ended.
 
+
 ## Background
 
 ### What is the RDP Bitmap Cache
