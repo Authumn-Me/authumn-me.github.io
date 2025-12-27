@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Authumns blog</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Authumns blog</description>
+    <generator>Hugo -- 0.153.2</generator>
+    <language>nl-be</language>
+    <lastBuildDate>Sat, 27 Dec 2025 15:46:01 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RDP: Big Brother Is Watching You</title>
+      <link>http://localhost:1313/posts/eerste-post/</link>
+      <pubDate>Sat, 27 Dec 2025 15:46:01 +0100</pubDate>
+      <guid>http://localhost:1313/posts/eerste-post/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
