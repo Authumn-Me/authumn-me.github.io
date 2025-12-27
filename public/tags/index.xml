@@ -1,1 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tags on Authumns blog</title><link>https://authumn-me.github.io/tags/</link><description>Recent content in Tags on Authumns blog</description><generator>Hugo -- 0.153.2</generator><language>nl-be</language><lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://authumn-me.github.io/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>Forensics</title><link>https://authumn-me.github.io/tags/forensics/</link><pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate><guid>https://authumn-me.github.io/tags/forensics/</guid><description/></item><item><title>Rdp</title><link>https://authumn-me.github.io/tags/rdp/</link><pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate><guid>https://authumn-me.github.io/tags/rdp/</guid><description/></item><item><title>Security</title><link>https://authumn-me.github.io/tags/security/</link><pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate><guid>https://authumn-me.github.io/tags/security/</guid><description/></item><item><title>Windows</title><link>https://authumn-me.github.io/tags/windows/</link><pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate><guid>https://authumn-me.github.io/tags/windows/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Authumns blog</title>
+    <link>http://localhost:1313/tags/</link>
+    <description>Recent content in Tags on Authumns blog</description>
+    <generator>Hugo -- 0.153.2</generator>
+    <language>nl-be</language>
+    <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Forensics</title>
+      <link>http://localhost:1313/tags/forensics/</link>
+      <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/forensics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rdp</title>
+      <link>http://localhost:1313/tags/rdp/</link>
+      <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/rdp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>http://localhost:1313/tags/security/</link>
+      <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Windows</title>
+      <link>http://localhost:1313/tags/windows/</link>
+      <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/windows/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
