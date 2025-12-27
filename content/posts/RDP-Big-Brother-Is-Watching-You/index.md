@@ -2,6 +2,7 @@
 title: "RDP Bitmap Cache: verborgen sporen van Remote Desktop sessies"
 date: 2025-01-01
 tags: ["rdp", "forensics", "windows", "security"]
+draft: false
 ---
 # RDP Bitmap Cache: verborgen sporen van Remote Desktop sessies
 
