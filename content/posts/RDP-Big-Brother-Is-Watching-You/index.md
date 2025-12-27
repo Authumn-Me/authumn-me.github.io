@@ -4,7 +4,6 @@ date: 2025-01-01
 tags: ["rdp", "forensics", "windows", "security"]
 draft: false
 ---
-# RDP Bitmap Cache: verborgen sporen van Remote Desktop sessies
 
 Remote Desktop has been a standard tool for system administrators and anyone who needs to manage a server or workstation from a distance for many years. During a session far more happens behind the scenes than most people realise. Windows quietly stores small fragments of the remote screen, a mechanism known as the RDP Bitmap Cache.
 
