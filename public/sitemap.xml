@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2025-12-27T15:46:01+01:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/eerste-post/</loc>
-    <lastmod>2025-12-27T15:46:01+01:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2025-12-27T15:46:01+01:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-  </url>
-</urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://authumn-me.github.io/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/tags/forensics/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/posts/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/tags/rdp/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/posts/rdp-big-brother-is-watching-you/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/tags/security/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/tags/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/tags/windows/</loc><lastmod>2025-01-01T00:00:00+00:00</lastmod></url><url><loc>https://authumn-me.github.io/categories/</loc></url></urlset>
