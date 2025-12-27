@@ -6,8 +6,16 @@
     <description>Recent content in Security on  </description>
     <generator>Hugo -- 0.153.2</generator>
     <language>nl-be</language>
-    <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 27 Dec 2025 19:33:53 +0100</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks</title>
+      <link>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</link>
+      <pubDate>Sat, 27 Dec 2025 19:33:53 +0100</pubDate>
+      <guid>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</guid>
+      <description>&lt;p&gt;Windows networks often operate primarily on IPv4, yet IPv6 remains enabled and active on nearly all Windows systems by default. Even in environments where IPv6 is not intentionally deployed, Windows continues to search for configuration sources that provide IPv6 parameters. This behaviour introduces an attack surface that is frequently underestimated: DHCPv6 poisoning.&lt;/p&gt;
+&lt;p&gt;This technique has been known in the security community for years and continues to appear in modern assessments. Evidence collected for this blog uses mitm6 to demonstrate how easily Windows clients can be influenced when IPv6 behaviour is not monitored or controlled.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>RDP - Big Brother is watching</title>
       <link>http://localhost:1313/blogs/rdp-big-brother-is-watching-you/</link>
