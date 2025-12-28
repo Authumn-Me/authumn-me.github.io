@@ -6,15 +6,8 @@
     <description>Recent content in whoami on  </description>
     <generator>Hugo -- 0.153.2</generator>
     <language>nl-be</language>
-    <lastBuildDate>Sun, 28 Dec 2025 08:10:36 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement</title>
-      <link>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</link>
-      <pubDate>Sun, 28 Dec 2025 08:10:36 +0100</pubDate>
-      <guid>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</guid>
-      <description>&lt;p&gt;Server Message Block (SMB) is one of the most fundamental protocols in Windows environments. It provides file sharing, remote management and a range of operating system functions that depend on integrity and trust. When SMB signing is not enforced, NTLM authentication can be relayed to SMB endpoints, allowing unauthorised access to systems that accept unsigned connections. This behaviour forms the basis of several real-world attack paths and continues to appear in security assessments.&lt;/p&gt;</description>
-    </item>
     <item>
       <title>LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation</title>
       <link>http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/</link>
@@ -22,6 +15,13 @@
       <guid>http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/</guid>
       <description>&lt;p&gt;Active Directory relies heavily on LDAP and LDAPS for authentication, directory queries and system management. These protocols underpin a significant portion of domain operations, including user lookups, group membership resolution, computer account provisioning and policy distribution. When LDAP signing and LDAPS channel binding are not enforced, NTLM authentication can be silently relayed to directory services, creating opportunities for unauthorised changes within the domain.&lt;/p&gt;
 &lt;p&gt;Earlier discussions on &lt;a href=&#34;https://authumn.com/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks&#34;&gt;DHCPv6 poisoning&lt;/a&gt; and &lt;a href=&#34;https://authumn.com/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/&#34;&gt;legacy name resolution protocols (LLMNR, NBT-NS and mDNS)&lt;/a&gt; highlight how Windows hosts can be deceived into sending authentication traffic to a rogue endpoint. LDAP services become natural relay targets when these fallback mechanisms remain active. Without LDAP signing or proper LDAPS channel binding, directories may accept authentication that did not originate from the legitimate client, enabling a range of impactful actions.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement</title>
+      <link>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</link>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</guid>
+      <description>&lt;p&gt;Server Message Block (SMB) is one of the most fundamental protocols in Windows environments. It provides file sharing, remote management and a range of operating system functions that depend on integrity and trust. When SMB signing is not enforced, NTLM authentication can be relayed to SMB endpoints, allowing unauthorised access to systems that accept unsigned connections. This behaviour forms the basis of several real-world attack paths and continues to appear in security assessments.&lt;/p&gt;</description>
     </item>
     <item>
       <title>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks</title>
