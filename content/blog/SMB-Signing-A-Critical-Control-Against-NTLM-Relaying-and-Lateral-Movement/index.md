@@ -37,11 +37,11 @@ Responder was used in the supporting evidence to demonstrate how poisoned reques
 
 The screenshot below show Responder collecting authentication requests that originate from hosts responding to poisoned network resolution mechanisms.
 
-![alt text](ResponderSMB-1.png)
+![](ResponderSMB-1.png)
 
 These captured credentials were then forwarded to SMB endpoints using ntlmrelayx, showing how systems without SMB signing enabled accept and process authentication that did not originate from the legitimate source.
 
-![alt text](InterceptingSMB-1.png)
+![](InterceptingSMB-1.png)
 
 ## **Relaying to SMB with a normal user account**
 
@@ -49,11 +49,11 @@ When an ordinary domain user account was relayed, the target system accepted the
 
 The screenshot below demonstrates a successful SMB relay using a standard domain user identity.
 
-![alt text](SMBInterceptionShowcase-1.png)
+![](SMBInterceptionShowcase-1.png)
 
 With this level of access, file shares become browsable and readable according to the user’s rights.
 
-![alt text](SMBRelayingShares-1.png)
+![](SMBRelayingShares-1.png)
 
 Although seemingly limited, such access often provides attackers with footholds, sensitive internal documentation or misconfigured administrative paths.
 
@@ -61,7 +61,7 @@ Although seemingly limited, such access often provides attackers with footholds,
 
 Environments where SMB signing is disabled on critical systems present even more severe risks. In the evidence below, a domain administrator account was relayed to a system lacking SMB signing enforcement. The server accepted the authentication without challenge.
 
-![alt text](SMBAdminRelay-1.png)
+![](SMBAdminRelay-1.png)
 
 *The screenshot shows ntlmrelayx establishing authenticated SMB access with domain administrator privileges.*
 
@@ -71,7 +71,7 @@ This elevated access enables a wide range of high-impact actions, including:
 
 Windows stores local password hashes in the Security Account Manager (SAM). With administrative SMB access, these values become retrievable. The extracted hashes include NT hashes, which can be used directly to authenticate to various Windows services. In such cases, the password does not need to be cracked for the account to be compromised.
 
-![alt text](SMBDumpSAM-1.png)
+![](SMBDumpSAM-1.png)
 
 ### **Retrieving LSA secrets and cached credentials**
 
@@ -81,7 +81,7 @@ In some environments, LSA secrets can include plaintext or partially recoverable
 
 The ability to extract LSA secrets and cached credentials illustrates the impact of gaining administrative SMB access on systems where SMB signing is not enforced.
 
-![alt text](SMBDumpLSA-1.png)
+![](SMBDumpLSA-1.png)
 
 ### **Remote code execution over SMB**
 
