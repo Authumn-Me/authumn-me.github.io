@@ -8,6 +8,12 @@
     <loc>http://localhost:1313/blog/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/</loc>
+    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/kerberos/</loc>
+    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
   </url><url>

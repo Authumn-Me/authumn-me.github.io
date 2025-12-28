@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kerberos on  </title>
+    <link>http://localhost:1313/tags/kerberos/</link>
+    <description>Recent content in Kerberos on  </description>
+    <generator>Hugo -- 0.153.2</generator>
+    <language>nl-be</language>
+    <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/kerberos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kerberoasting: How Service Accounts Become a Silent Credential Exposure Risk</title>
+      <link>http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/</guid>
+      <description>&lt;p&gt;Kerberos is the primary authentication mechanism in Active Directory environments and is designed to provide secure, ticket-based authentication between users, services and domain controllers. While Kerberos itself is a strong protocol, its security depends heavily on how service accounts are configured. One commonly overlooked weakness is Kerberoasting, a technique that allows attackers to extract service ticket hashes and perform offline password attacks against service accounts.&lt;/p&gt;
+&lt;p&gt;Kerberoasting does not exploit a vulnerability in Kerberos. Instead, it abuses legitimate protocol behaviour combined with weak or mismanaged service account credentials. This makes the technique particularly dangerous, as it often remains undetected and does not require elevated privileges.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

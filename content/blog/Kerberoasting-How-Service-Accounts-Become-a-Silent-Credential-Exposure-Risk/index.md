@@ -37,11 +37,11 @@ The returned tickets contain encrypted data derived from the passwords of the co
 
 The screenshot below shows how SPN-enabled accounts can be enumerated and how their associated service tickets can be retrieved using the GetUserSPNs functionality from the Impacket toolkit.
 
-**OKACEHOLDER– Impacket GetUserSPNs**
+![](SPNAccounts.png)
 
 Once the service tickets have been obtained, the encrypted ticket data can be extracted for further offline analysis. The following screenshot illustrates the extracted hashes derived from the captured service tickets.
 
-**PLACEHOLDER– Extracted service ticket hashes**
+![](Hashes.png)
 
 These observations highlight that Kerberoasting activity blends seamlessly into legitimate domain behaviour. Service ticket requests are indistinguishable from normal Kerberos operations, making detection difficult without focused monitoring or anomaly-based analysis.
 
@@ -51,7 +51,7 @@ Once a service ticket hash has been obtained, it can be processed offline. Since
 
 The screenshot below demonstrates that a weak service account password can be recovered in a short amount of time once the corresponding service ticket hash has been extracted.
 
-**PLACEHOLDER – PASSWORD CRACKING HASHCAT**
+![](Hashcat.png)
 
 A compromised service account can have a significant impact on the environment. Service accounts often run critical applications, scheduled tasks or backend services and are frequently granted elevated privileges to function correctly. In practice, these privileges are often broader than necessary. In some environments, service accounts are members of highly privileged groups or even assigned Domain Administrator rights, dramatically increasing the blast radius of a successful Kerberoasting attack.
 
@@ -61,9 +61,14 @@ This combination of offline password exposure and excessive privileges makes poo
 
 Kerberoasting is only possible when a service account has an SPN assigned. SPNs bind a service instance to an account and enable Kerberos authentication for that service.
 
-This screenshot below shows the configration of a service account with an SPN configured, making it eligible for Kerberos service ticket requests.
+This screenshot below  the configration of a service account with an SPN confshowsigured, making it eligible for Kerberos service ticket requests.
 
-**PLACEHOLDER - CONFIGURATION Screenshot in dc confs**
+![](SPN-Setup.png)
+
+*Image from: [hackndo][1]*
+
+[1]: https://en.hackndo.com/assets/uploads/2019/02/spn.png
+
 
 While SPNs are required for Kerberos to function correctly, they also define the attack surface for Kerberoasting. Poorly managed SPNs combined with weak passwords create a predictable exposure point.
 
