@@ -31,19 +31,19 @@ Both measures exist to guarantee that authentication originates from the device 
 
 Responder can be used to capture authentication traffic generated through poisoned name resolution or IPv6 redirection. Combined with ntlmrelayx, this allows the behaviour of LDAP and LDAPS endpoints to be demonstrated in environments where signing and channel binding are not enforced.
 
-![](https://www.resilix.be/web/image/3828-23bd75c1/image.png?access_token=93ded74a-dd22-4d5e-a2cf-7ad3925cd7d7)
+![](InterceptingTraffic-1.png)
 
 The screenshot below displays ntlmrelayx successfully authenticating to LDAP using relayed NTLM credentials.
 
-![](https://www.resilix.be/web/image/3829-29e9d47e/image.png?access_token=110ac317-c838-4da3-b842-c6fc0bf87f05)
+![](LDAPRelay-1.png)
 
 The next screenshot shows LDAPS accepting the relayed authentication. When channel binding is not enforced, this authentication can be relayed to perform various directory operations, depending on the permissions of the relayed user.
 
-![](https://www.resilix.be/web/image/3831-23850a58/image.png?access_token=c5843f79-a1af-4c20-a504-bdcc0cf16ecc)
+![](LDAPSRelay-1.png)
 
 The last screenshot shows the help functionality of the interactive LDAPS shell. It lists the actions that can be carried out through an LDAPS relay, such as creating computer accounts, adding new users, retrieving LDAP domain information or modifying group memberships, among others.
 
-![](https://www.resilix.be/web/image/3832-cf550a6a/image.png?access_token=29d8f160-4e70-428e-a42e-afacb768adcc)
+![](LDAPshell-1.png)
 
 These examples illustrate how credentials captured indirectly through network behaviour can result in directory-level access without the user’s awareness.
 
@@ -59,13 +59,13 @@ In many Active Directory environments, regular users are allowed to create up to
 
 If this attribute is not set to zero, LDAPs relaying can be used to create new machine accounts under the identity of the relayed user.
 
-![](https://www.resilix.be/web/image/3833-4f524a40/image.png?access_token=d47e25db-4ca8-4705-aa24-a1a7563480a9)
+![](ldapsshell-1.png)
 
 ### **2. Retrieving domain information**
 
 LDAP relaying can expose a wide range of domain data such as user lists, group memberships and configuration attributes.
 
-![](https://www.resilix.be/web/image/3835-e2bbc265/image.png?access_token=be14d89c-2a1c-40e0-90d5-6286e0c76e1a)
+![](DomainDump-1.png)
 
 ### **3. Interactive LDAP sessions with privilege escalation opportunities**
 

@@ -113,29 +113,29 @@
 <h2 id="observed-behaviour-during-analysis"><strong>Observed behaviour during analysis</strong><a hidden class="anchor" aria-hidden="true" href="#observed-behaviour-during-analysis">#</a></h2>
 <p>Responder was used in the supporting evidence to demonstrate how poisoned requests generate authentication attempts that can be forwarded to SMB. The tool captured incoming traffic and prepared it for relaying.</p>
 <p>The screenshot below show Responder collecting authentication requests that originate from hosts responding to poisoned network resolution mechanisms.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/ResponderSMB-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/ResponderSMB-1.png"></p>
 <p>These captured credentials were then forwarded to SMB endpoints using ntlmrelayx, showing how systems without SMB signing enabled accept and process authentication that did not originate from the legitimate source.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/InterceptingSMB-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/InterceptingSMB-1.png"></p>
 <h2 id="relaying-to-smb-with-a-normal-user-account"><strong>Relaying to SMB with a normal user account</strong><a hidden class="anchor" aria-hidden="true" href="#relaying-to-smb-with-a-normal-user-account">#</a></h2>
 <p>When an ordinary domain user account was relayed, the target system accepted the authentication attempt. Access was granted according to the permissions defined for that account, validating that SMB endpoints without signing are susceptible even to low-privilege relays.</p>
 <p>The screenshot below demonstrates a successful SMB relay using a standard domain user identity.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBInterceptionShowcase-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBInterceptionShowcase-1.png"></p>
 <p>With this level of access, file shares become browsable and readable according to the user’s rights.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBRelayingShares-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBRelayingShares-1.png"></p>
 <p>Although seemingly limited, such access often provides attackers with footholds, sensitive internal documentation or misconfigured administrative paths.</p>
 <h2 id="relaying-smb-authentication-as-a-domain-administrator"><strong>Relaying SMB authentication as a domain administrator</strong><a hidden class="anchor" aria-hidden="true" href="#relaying-smb-authentication-as-a-domain-administrator">#</a></h2>
 <p>Environments where SMB signing is disabled on critical systems present even more severe risks. In the evidence below, a domain administrator account was relayed to a system lacking SMB signing enforcement. The server accepted the authentication without challenge.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBAdminRelay-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBAdminRelay-1.png"></p>
 <p><em>The screenshot shows ntlmrelayx establishing authenticated SMB access with domain administrator privileges.</em></p>
 <p>This elevated access enables a wide range of high-impact actions, including:</p>
 <h3 id="dumping-the-sam-database"><strong>Dumping the SAM database</strong><a hidden class="anchor" aria-hidden="true" href="#dumping-the-sam-database">#</a></h3>
 <p>Windows stores local password hashes in the Security Account Manager (SAM). With administrative SMB access, these values become retrievable. The extracted hashes include NT hashes, which can be used directly to authenticate to various Windows services. In such cases, the password does not need to be cracked for the account to be compromised.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBDumpSAM-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBDumpSAM-1.png"></p>
 <h3 id="retrieving-lsa-secrets-and-cached-credentials"><strong>Retrieving LSA secrets and cached credentials</strong><a hidden class="anchor" aria-hidden="true" href="#retrieving-lsa-secrets-and-cached-credentials">#</a></h3>
 <p>The Local Security Authority (LSA) stores a range of sensitive values that include credentials used by services, scheduled tasks and system components. These LSA secrets may also contain cached domain logon data, which allows users to authenticate when domain controllers are unavailable.</p>
 <p>In some environments, LSA secrets can include plaintext or partially recoverable passwords. This behaviour results from a separate underlying issue that falls outside the scope of this blog and will be addressed in a future post.</p>
 <p>The ability to extract LSA secrets and cached credentials illustrates the impact of gaining administrative SMB access on systems where SMB signing is not enforced.</p>
-<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBDumpLSA-1.png"></p>
+<p><img loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBDumpLSA-1.png"></p>
 <h3 id="remote-code-execution-over-smb"><strong>Remote code execution over SMB</strong><a hidden class="anchor" aria-hidden="true" href="#remote-code-execution-over-smb">#</a></h3>
 <p>Administrative SMB access allows command execution on the target system using standard operating system functions when signing is not enforced.</p>
 <p>These outcomes highlight the severity of NTLM relaying when SMB signing is absent. The attack path requires no credentials and no exploitation of software vulnerabilities. It relies solely on predictable network behaviour and missing protocol integrity. The examples shown above, such as share access, SAM extraction, LSA secret retrieval and remote code execution, represent only a subset of what becomes possible once SMB access is achieved through relaying. A wide range of additional actions can be performed across the environment, depending on the privileges of the relayed account and the configuration of the target systems. These examples are included to illustrate the impact, not to suggest that they are the only consequences of disabled SMB signing.</p>
@@ -175,10 +175,10 @@
       <li><a href="http://localhost:1313/tags/active-directory/">Active-Directory</a></li>
     </ul>
 <nav class="paginav">
-  <a class="next" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">
+  <a class="next" href="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/">
     <span class="title">Next »</span>
     <br>
-    <span>LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure</span>
+    <span>LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation</span>
   </a>
 </nav>
 

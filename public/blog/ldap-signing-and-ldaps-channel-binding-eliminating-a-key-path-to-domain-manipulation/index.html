@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation |  </title>
+<meta name="keywords" content="windows, security, active directory">
+<meta name="description" content="Active Directory relies heavily on LDAP and LDAPS for authentication, directory queries and system management. These protocols underpin a significant portion of domain operations, including user lookups, group membership resolution, computer account provisioning and policy distribution. When LDAP signing and LDAPS channel binding are not enforced, NTLM authentication can be silently relayed to directory services, creating opportunities for unauthorised changes within the domain.
+Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LLMNR, NBT-NS and mDNS) highlight how Windows hosts can be deceived into sending authentication traffic to a rogue endpoint. LDAP services become natural relay targets when these fallback mechanisms remain active. Without LDAP signing or proper LDAPS channel binding, directories may accept authentication that did not originate from the legitimate client, enabling a range of impactful actions.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.12fe53f86c18b8f1b9022f785825d05a87575f72f414075af531dd655a9bba67.css" integrity="sha256-Ev5T&#43;GwYuPG5Ai94WCXQWodXX3L0FAda9THdZVqbumc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="  (Alt + H)">
+                <img src="http://localhost:1313/images/logo.png" alt="" aria-label="logo"
+                    height="152"> </a>
+            <div class="logo-switches">
+                <button id="theme-toggle" hidden=true accesskey="t" title="(Alt + T)" aria-label="Toggle theme" >
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="whoami">
+                    <span>whoami</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blogs">
+                    <span>Blogs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation
+    </h1>
+    <div class="post-meta"><span title='2025-12-28 00:00:00 +0000 UTC'>December 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Active Directory relies heavily on LDAP and LDAPS for authentication, directory queries and system management. These protocols underpin a significant portion of domain operations, including user lookups, group membership resolution, computer account provisioning and policy distribution. When LDAP signing and LDAPS channel binding are not enforced, NTLM authentication can be silently relayed to directory services, creating opportunities for unauthorised changes within the domain.</p>
+<p>Earlier discussions on <a href="https://authumn.com/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks">DHCPv6 poisoning</a> and <a href="https://authumn.com/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">legacy name resolution protocols (LLMNR, NBT-NS and mDNS)</a> highlight how Windows hosts can be deceived into sending authentication traffic to a rogue endpoint. LDAP services become natural relay targets when these fallback mechanisms remain active. Without LDAP signing or proper LDAPS channel binding, directories may accept authentication that did not originate from the legitimate client, enabling a range of impactful actions.</p>
+<h2 id="how-ldap-signing-and-ldaps-channel-binding-work"><strong>How LDAP signing and LDAPS channel binding work</strong><a hidden class="anchor" aria-hidden="true" href="#how-ldap-signing-and-ldaps-channel-binding-work">#</a></h2>
+<h3 id="ldap-signing"><strong>LDAP signing</strong><a hidden class="anchor" aria-hidden="true" href="#ldap-signing">#</a></h3>
+<p>LDAP signing ensures that all LDAP communication is protected against manipulation by adding cryptographic integrity checks to each message. When signing is required, the server verifies that the data originates from the authenticated session and has not been altered in transit. If signing is not enforced, LDAP servers will continue to accept unsigned or only partially protected messages. This behaviour allows NTLM authentication to be relayed into LDAP because the server does not verify whether the incoming request truly originates from the client that performed the authentication.</p>
+<h3 id="ldaps-channel-binding"><strong>LDAPS channel binding</strong><a hidden class="anchor" aria-hidden="true" href="#ldaps-channel-binding">#</a></h3>
+<p>LDAPS channel binding adds an additional safeguard by linking the authentication process directly to the underlying TLS session. The server verifies that the NTLM authentication belongs to the same encrypted connection that was originally established between the client and the directory. If channel binding is not enforced, LDAPS will still accept NTLM authentication that arrives over a different connection, even though the session is encrypted. This allows attackers to relay NTLM credentials into LDAPS endpoints despite the presence of TLS, making directory write operations possible whenever the relayed user has sufficient permissions.</p>
+<p>Both measures exist to guarantee that authentication originates from the device actually connected to the directory and not from an attacker acting as an intermediary.</p>
+<h2 id="evidence-of-ldap-and-ldaps-relaying"><strong>Evidence of LDAP and LDAPS relaying</strong><a hidden class="anchor" aria-hidden="true" href="#evidence-of-ldap-and-ldaps-relaying">#</a></h2>
+<p>Responder can be used to capture authentication traffic generated through poisoned name resolution or IPv6 redirection. Combined with ntlmrelayx, this allows the behaviour of LDAP and LDAPS endpoints to be demonstrated in environments where signing and channel binding are not enforced.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/InterceptingTraffic-1.png"></p>
+<p>The screenshot below displays ntlmrelayx successfully authenticating to LDAP using relayed NTLM credentials.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/LDAPRelay-1.png"></p>
+<p>The next screenshot shows LDAPS accepting the relayed authentication. When channel binding is not enforced, this authentication can be relayed to perform various directory operations, depending on the permissions of the relayed user.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/LDAPSRelay-1.png"></p>
+<p>The last screenshot shows the help functionality of the interactive LDAPS shell. It lists the actions that can be carried out through an LDAPS relay, such as creating computer accounts, adding new users, retrieving LDAP domain information or modifying group memberships, among others.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/LDAPshell-1.png"></p>
+<p>These examples illustrate how credentials captured indirectly through network behaviour can result in directory-level access without the user’s awareness.</p>
+<h2 id="impact-of-ldap-and-ldaps-relaying"><strong>Impact of LDAP and LDAPS relaying</strong><a hidden class="anchor" aria-hidden="true" href="#impact-of-ldap-and-ldaps-relaying">#</a></h2>
+<p>LDAP relaying allows authentication to be redirected to directory services and processed under the security context of the relayed user. The resulting access level depends entirely on the privileges assigned to that account.</p>
+<p>Common high-impact scenarios include:</p>
+<h3 id="1-abusing-default-machine-account-creation-rights"><strong>1. Abusing default machine account creation rights</strong><a hidden class="anchor" aria-hidden="true" href="#1-abusing-default-machine-account-creation-rights">#</a></h3>
+<p>In many Active Directory environments, regular users are allowed to create up to ten computer accounts. This behaviour is controlled by the ms-DS-MachineAccountQuota attribute.</p>
+<p>If this attribute is not set to zero, LDAPs relaying can be used to create new machine accounts under the identity of the relayed user.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/ldapsshell-1.png"></p>
+<h3 id="2-retrieving-domain-information"><strong>2. Retrieving domain information</strong><a hidden class="anchor" aria-hidden="true" href="#2-retrieving-domain-information">#</a></h3>
+<p>LDAP relaying can expose a wide range of domain data such as user lists, group memberships and configuration attributes.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/DomainDump-1.png"></p>
+<h3 id="3-interactive-ldap-sessions-with-privilege-escalation-opportunities"><strong>3. Interactive LDAP sessions with privilege escalation opportunities</strong><a hidden class="anchor" aria-hidden="true" href="#3-interactive-ldap-sessions-with-privilege-escalation-opportunities">#</a></h3>
+<p>Many relaying demonstrations show how an interactive LDAP shell becomes available under the relayed user identity. Within this environment, LDAP StartTLS upgrades may allow extended operations, depending on server settings.</p>
+<h3 id="4-writing-to-the-directory-through-ldaps-relaying"><strong>4. Writing to the directory through LDAPS relaying</strong><a hidden class="anchor" aria-hidden="true" href="#4-writing-to-the-directory-through-ldaps-relaying">#</a></h3>
+<p>When LDAPS does not enforce channel binding, the server may allow authenticated write operations. The relayed account’s permissions determine which modifications are possible.</p>
+<p>Typical writeable targets include:</p>
+<ul>
+<li>Creation of new user accounts</li>
+<li>Assigning group membership or rights</li>
+<li>Modifying attributes on existing objects</li>
+<li>Preparation steps toward broader domain compromise</li>
+</ul>
+<p>These actions highlight the systemic impact of missing LDAP signing and channel binding, particularly when combined with earlier poisoning techniques.</p>
+<h2 id="these-examples-are-not-the-full-extent-of-ldap-relaying"><strong>These examples are not the full extent of LDAP relaying</strong><a hidden class="anchor" aria-hidden="true" href="#these-examples-are-not-the-full-extent-of-ldap-relaying">#</a></h2>
+<p>The demonstrated actions, such as creating machine accounts, retrieving domain information and performing directory modifications, represent only a small portion of what becomes possible when LDAP signing and channel binding are not enforced. LDAP relaying enables a wide attack surface that depends on privilege levels and Active Directory configuration. The examples presented in this blog illustrate the potential consequences but do not reflect the full range of LDAP relay capabilities.</p>
+<h2 id="why-ldap-signing-and-ldaps-channel-binding-matter"><strong>Why LDAP signing and LDAPS channel binding matter</strong><a hidden class="anchor" aria-hidden="true" href="#why-ldap-signing-and-ldaps-channel-binding-matter">#</a></h2>
+<p>Without LDAP signing or channel binding:</p>
+<ul>
+<li>NTLM authentication can be relayed into LDAP or LDAPS</li>
+<li>Directory operations may be performed without user awareness</li>
+<li>Poisoning attacks become significantly more impactful</li>
+<li>High-value accounts that authenticate on the network create immediate risk</li>
+<li>Lateral movement becomes trivial on systems lacking these protections</li>
+</ul>
+<p>LDAP and LDAPS are central to domain operations. Ensuring the integrity of these protocols is critical for preventing silent privilege escalation.</p>
+<h2 id="mitigation-strategies"><strong>Mitigation strategies</strong><a hidden class="anchor" aria-hidden="true" href="#mitigation-strategies">#</a></h2>
+<h3 id="enforce-ldap-signing"><strong>Enforce LDAP signing</strong><a hidden class="anchor" aria-hidden="true" href="#enforce-ldap-signing">#</a></h3>
+<p>LDAP signing must be set to “Required” on all domain controllers. The default “None” or “Negotiate” settings leave directories exposed to NTLM relaying.</p>
+<h3 id="enforce-ldaps-channel-binding"><strong>Enforce LDAPS channel binding</strong><a hidden class="anchor" aria-hidden="true" href="#enforce-ldaps-channel-binding">#</a></h3>
+<p>Channel binding ensures that authentication is tied to the TLS session and prevents relaying into LDAPS endpoints.</p>
+<h2 id="conclusion"><strong>Conclusion</strong><a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>LDAP signing and LDAPS channel binding are essential for ensuring that Active Directory does not accept authentication that has been silently redirected through poisoning techniques. Without these controls, authentication captured via DHCPv6 poisoning, LLMNR, NBT-NS or mDNS can be relayed to directory services and processed as if it were legitimate. The result ranges from metadata extraction to object creation, privilege assignment and potential domain compromise.</p>
+<p>A future post will explore misconfigurations and authentication behaviours that result in plaintext or recoverable credentials within LDAP-related operations, extending the discussion on credential exposure beyond the relay mechanisms described here.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/windows/">Windows</a></li>
+      <li><a href="http://localhost:1313/tags/security/">Security</a></li>
+      <li><a href="http://localhost:1313/tags/active-directory/">Active-Directory</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement</span>
+  </a>
+  <a class="next" href="http://localhost:1313/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/">
+    <span class="title">Next »</span>
+    <br>
+    <span>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/"> </a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a><script src="https://unpkg.com/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('.post-content img', {
+    margin: 24,
+    background: '#000'
+  })
+</script>
+
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

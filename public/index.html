@@ -116,19 +116,19 @@
 
 <article class="post-entry"> 
 <figure class="entry-cover">
-            <img loading="lazy" src="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/DNSPosioningLogo.png" alt="">
+            <img loading="lazy" src="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/cover.png" alt="">
 </figure>
   <header class="entry-header">
-    <h2 class="entry-hint-parent">LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure
+    <h2 class="entry-hint-parent">LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation
     </h2>
   </header>
   <div class="entry-content">
-    <p>Windows environments rely on several name resolution mechanisms to locate resources when DNS queries fail or when systems operate in mixed or unmanaged networks. Among these mechanisms are LLMNR (Link-Local Multicast Name Resolution), NBT-NS (NetBIOS Name Service) and mDNS (Multicast DNS). Although created to support small or misconfigured networks, these protocols continue to operate silently in many modern enterprise environments.
-Their design introduces predictable weaknesses. All three protocols accept responses from any device on the local network segment. This behaviour creates conditions for credential interception when a system requests a name that cannot be resolved through DNS. For this reason, the protocols have long been associated with credential exposure and are frequently observed in security assessments.
+    <p>Active Directory relies heavily on LDAP and LDAPS for authentication, directory queries and system management. These protocols underpin a significant portion of domain operations, including user lookups, group membership resolution, computer account provisioning and policy distribution. When LDAP signing and LDAPS channel binding are not enforced, NTLM authentication can be silently relayed to directory services, creating opportunities for unauthorised changes within the domain.
+Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LLMNR, NBT-NS and mDNS) highlight how Windows hosts can be deceived into sending authentication traffic to a rogue endpoint. LDAP services become natural relay targets when these fallback mechanisms remain active. Without LDAP signing or proper LDAPS channel binding, directories may accept authentication that did not originate from the legitimate client, enabling a range of impactful actions.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-12-27 00:00:00 +0000 UTC'>December 27, 2025</span>&nbsp;·&nbsp;<span>5 min</span></footer>
-  <a class="entry-link" aria-label="post link to LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/"></a>
+  <footer class="entry-footer"><span title='2025-12-28 00:00:00 +0000 UTC'>December 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation" href="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -146,6 +146,23 @@ This technique has been known in the security community for years and continues 
   </div>
   <footer class="entry-footer"><span title='2025-12-26 00:00:00 +0000 UTC'>December 26, 2025</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks" href="http://localhost:1313/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover">
+            <img loading="lazy" src="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/DNSPosioningLogo.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Windows environments rely on several name resolution mechanisms to locate resources when DNS queries fail or when systems operate in mixed or unmanaged networks. Among these mechanisms are LLMNR (Link-Local Multicast Name Resolution), NBT-NS (NetBIOS Name Service) and mDNS (Multicast DNS). Although created to support small or misconfigured networks, these protocols continue to operate silently in many modern enterprise environments.
+Their design introduces predictable weaknesses. All three protocols accept responses from any device on the local network segment. This behaviour creates conditions for credential interception when a system requests a name that cannot be resolved through DNS. For this reason, the protocols have long been associated with credential exposure and are frequently observed in security assessments.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-12-26 00:00:00 +0000 UTC'>December 26, 2025</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/"></a>
 </article>
 
 <article class="post-entry"> 

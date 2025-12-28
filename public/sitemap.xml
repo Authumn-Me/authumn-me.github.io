@@ -23,6 +23,9 @@
     <loc>http://localhost:1313/tags/windows/</loc>
     <lastmod>2025-12-28T08:10:36+01:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/</loc>
+    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/</loc>
     <lastmod>2025-12-27T00:00:00+00:00</lastmod>
   </url><url>
