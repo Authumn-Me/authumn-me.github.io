@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure |  </title>
+<meta name="keywords" content="windows, security, active-directory, pentesting">
+<meta name="description" content="Windows environments rely on several name resolution mechanisms to locate resources when DNS queries fail or when systems operate in mixed or unmanaged networks. Among these mechanisms are LLMNR (Link-Local Multicast Name Resolution), NBT-NS (NetBIOS Name Service) and mDNS (Multicast DNS). Although created to support small or misconfigured networks, these protocols continue to operate silently in many modern enterprise environments.
+Their design introduces predictable weaknesses. All three protocols accept responses from any device on the local network segment. This behaviour creates conditions for credential interception when a system requests a name that cannot be resolved through DNS. For this reason, the protocols have long been associated with credential exposure and are frequently observed in security assessments.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d844a6839c6beffbedef2bb2a7f6b667057e21d3bc875c52f15b570b1bf19055.css" integrity="sha256-2ESmg5xr7/vt7yuyp/a2ZwV&#43;IdO8h1xS8VtXCxvxkFU=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="  (Alt + H)">
+                <img src="http://localhost:1313/images/logo.png" alt="" aria-label="logo"
+                    height="152"> </a>
+            <div class="logo-switches">
+                <button id="theme-toggle" hidden=true accesskey="t" title="(Alt + T)" aria-label="Toggle theme" >
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="whoami">
+                    <span>whoami</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blogs">
+                    <span>Blogs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure
+    </h1>
+    <div class="post-meta"><span title='2025-12-27 00:00:00 +0000 UTC'>December 27, 2025</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Windows environments rely on several name resolution mechanisms to locate resources when DNS queries fail or when systems operate in mixed or unmanaged networks. Among these mechanisms are LLMNR (Link-Local Multicast Name Resolution), NBT-NS (NetBIOS Name Service) and mDNS (Multicast DNS). Although created to support small or misconfigured networks, these protocols continue to operate silently in many modern enterprise environments.</p>
+<p>Their design introduces predictable weaknesses. All three protocols accept responses from any device on the local network segment. This behaviour creates conditions for credential interception when a system requests a name that cannot be resolved through DNS. For this reason, the protocols have long been associated with credential exposure and are frequently observed in security assessments.</p>
+<h2 id="how-llmnr-nbt-ns-and-mdns-function"><strong>How LLMNR, NBT-NS and mDNS function</strong><a hidden class="anchor" aria-hidden="true" href="#how-llmnr-nbt-ns-and-mdns-function">#</a></h2>
+<p>When a Windows system attempts to resolve a hostname and DNS fails to provide an answer, the operating system automatically falls back to additional name resolution methods.</p>
+<p><strong>LLMNR:</strong> LLMNR sends multicast queries to the local network segment when DNS resolution fails. Any system within that subnet can respond.</p>
+<p><strong>NBT-NS:</strong> NetBIOS Name Service is an even older fallback mechanism. It broadcasts name requests to the local network and accepts any matching reply.</p>
+<p><strong>mDNS:</strong> Multicast DNS is commonly used in mixed environments and service discovery scenarios. Like LLMNR, it relies on multicast traffic and trusts the first valid response.</p>
+<p>These protocols were designed without authentication. As a result, any host on the same network segment can reply to a request, claiming authority over a requested resource.</p>
+<h2 id="observed-behaviour-in-windows-environments"><strong>Observed behaviour in Windows environments</strong><a hidden class="anchor" aria-hidden="true" href="#observed-behaviour-in-windows-environments">#</a></h2>
+<p>When LLMNR, NBT-NS or mDNS queries are broadcast, any system on the same network segment can impersonate the requested service. A malicious responder can reply to these requests and present itself as the hostname being searched for. Windows then initiates authentication to this rogue responder as part of its normal network behaviour.</p>
+<p>The image below displays Responder.py providing spoofed responses to LLMNR, NBT-NS and mDNS queries. This screenshot illustrates how easily these legacy name resolution protocols can be influenced by an untrusted device on the same network segment.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/Responder.png"></p>
+<h2 id="impact-on-intercepted-credentials"><strong>Impact on intercepted credentials</strong><a hidden class="anchor" aria-hidden="true" href="#impact-on-intercepted-credentials">#</a></h2>
+<p>The fallback behaviour of LLMNR, NBT-NS and mDNS can cause systems to direct authentication attempts toward a rogue responder. In most environments this results in the interception of NetNTLMv2 challenge-response pairs, and in certain legacy configurations NetNTLMv1 or other related exchanges. These samples do not reveal plaintext credentials directly, but can be subjected to offline password guessing, making weak or reused passwords significantly more vulnerable.</p>
+<p>In addition to NTLM-based authentication, certain environments may still produce unencrypted HTTP traffic during service discovery or when applications fall back to non-TLS endpoints. If such traffic carries basic or form-based authentication over plain HTTP, the associated credentials may be exposed in clear text. Although this behaviour is less common in modern deployments, it remains possible in networks where legacy systems, management interfaces or misconfigured internal applications still rely on unsecured HTTP communication.</p>
+<p>The image below shows a NetNTLMv2 challenge-response pair captured after the system attempted to authenticate to the rogue responder. The example highlights the type of credential material that becomes exposed through these legacy name resolution mechanisms.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/NTLMv2HashInterception.png"></p>
+<p>The final screenshot demonstrates an offline cracking attempt using Hashcat against the intercepted NetNTLMv2 sample. The recovered password indicates how quickly weak credentials can be compromised once a challenge-response pair is obtained, further highlighting the security implications of leaving these protocols enabled.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/CrackingTheHash.png"></p>
+<p>The combination of name resolution protocols and fallback to unsecured transport can therefore lead not only to the capture of challenge-response samples, but also, in specific scenarios, to the interception of plaintext credentials. This broadens the overall impact and further highlights the necessity of disabling or restricting these legacy mechanisms.</p>
+<h2 id="why-these-protocols-remain-problematic"><strong>Why these protocols remain problematic</strong><a hidden class="anchor" aria-hidden="true" href="#why-these-protocols-remain-problematic">#</a></h2>
+<p>The continued prevalence of LLMNR, NBT-NS and mDNS is due to a combination of default Windows settings, legacy application requirements and the persistence of mixed network environments. Their behaviour introduces several structural risks:</p>
+<ul>
+<li>Trust in unauthenticated responses</li>
+<li>Automatic fallback behaviour without warnings</li>
+<li>Network broadcast and multicast traffic visible to all hosts</li>
+<li>NTLM authentication attempts triggered without user awareness</li>
+</ul>
+<p>Without additional safeguards, these protocols create predictable opportunities for credential interception and subsequent misuse.</p>
+<h2 id="mitigation-strategies"><strong>Mitigation strategies</strong><a hidden class="anchor" aria-hidden="true" href="#mitigation-strategies">#</a></h2>
+<p>Mitigation requires a combination of host configuration, network controls and credential hygiene.</p>
+<p><strong>Disable LLMNR and NBT-NS where possible</strong></p>
+<p>Group Policy provides settings to disable LLMNR.</p>
+<p>NBT-NS can be disabled by turning off NetBIOS on the relevant interfaces.</p>
+<p>These two controls significantly reduce legacy fallback behaviour.</p>
+<p><strong>Restrict or monitor mDNS</strong></p>
+<p>mDNS may be required for certain device types, but enterprise networks can segment or filter multicast traffic to prevent misuse.</p>
+<p><strong>Deploy network-level detection</strong></p>
+<p>Monitoring tools can detect rogue LLMNR, NBT-NS and mDNS responders, allowing rapid identification of suspicious behaviour.</p>
+<h2 id="conclusion"><strong>Conclusion</strong><a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>LLMNR, NBT-NS and mDNS exemplify legacy name resolution protocols that continue to influence modern Windows networks. Their design and silent fallback behaviour create opportunities for credential interception, often without visible signs on the client system.</p>
+<p>Although these protocols were never intended to operate in hardened enterprise environments, they remain enabled by default and are therefore commonly exploited. Proper mitigation requires targeted configuration changes, improved credential practices and network-level enforcement.</p>
+<p>A follow-up blog will cover how intercepted credentials from these protocols can be leveraged in broader attack chains, including NTLM relaying and privilege escalation pathways, similar to those observed in IPv6-based poisoning scenarios.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/windows/">Windows</a></li>
+      <li><a href="http://localhost:1313/tags/security/">Security</a></li>
+      <li><a href="http://localhost:1313/tags/active-directory/">Active Directory</a></li>
+      <li><a href="http://localhost:1313/tags/pentesting/">Pentesting</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement</span>
+  </a>
+  <a class="next" href="http://localhost:1313/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/">
+    <span class="title">Next »</span>
+    <br>
+    <span>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/"> </a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a><script src="https://unpkg.com/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('.post-content img', {
+    margin: 24,
+    background: '#000'
+  })
+</script>
+
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

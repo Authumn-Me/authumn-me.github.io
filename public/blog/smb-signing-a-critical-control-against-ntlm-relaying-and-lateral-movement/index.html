@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement |  </title>
+<meta name="keywords" content="windows, security, active directory">
+<meta name="description" content="Server Message Block (SMB) is one of the most fundamental protocols in Windows environments. It provides file sharing, remote management and a range of operating system functions that depend on integrity and trust. When SMB signing is not enforced, NTLM authentication can be relayed to SMB endpoints, allowing unauthorised access to systems that accept unsigned connections. This behaviour forms the basis of several real-world attack paths and continues to appear in security assessments.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.585a1bc1fc5825f169ffbfc7993016f3806190b6d8d4ce6e5fc22ac56e49848d.css" integrity="sha256-WFobwfxYJfFp/7/HmTAW84BhkLbY1M5uX8IqxW5JhI0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="  (Alt + H)">
+                <img src="http://localhost:1313/images/logo.png" alt="" aria-label="logo"
+                    height="152"> </a>
+            <div class="logo-switches">
+                <button id="theme-toggle" hidden=true accesskey="t" title="(Alt + T)" aria-label="Toggle theme" >
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="whoami">
+                    <span>whoami</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blogs">
+                    <span>Blogs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement
+    </h1>
+    <div class="post-meta"><span title='2025-12-28 08:10:36 +0100 CET'>December 28, 2025</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Server Message Block (SMB) is one of the most fundamental protocols in Windows environments. It provides file sharing, remote management and a range of operating system functions that depend on integrity and trust. When SMB signing is not enforced, NTLM authentication can be relayed to SMB endpoints, allowing unauthorised access to systems that accept unsigned connections. This behaviour forms the basis of several real-world attack paths and continues to appear in security assessments.</p>
+<p>Earlier analyses of <a href="https://authumn.com/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks">DHCPv6 poisoning</a> and <a href="https://authumn.com/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">legacy name resolution protocols such as LLMNR, NBT-NS and mDNS</a> demonstrate how Windows hosts may be deceived into sending authentication traffic to an attacker-controlled endpoint. When such traffic is not protected with modern safeguards, SMB becomes a high-value relay target. The combination of unauthenticated network discovery and a lack of SMB signing creates a powerful chain of compromise.</p>
+<p>This post focuses on SMB signing as a defensive mechanism and uses supporting evidence to illustrate the risks that arise when it is disabled.</p>
+<h2 id="how-smb-signing-fits-into-the-broader-attack-surface"><strong>How SMB signing fits into the broader attack surface</strong><a hidden class="anchor" aria-hidden="true" href="#how-smb-signing-fits-into-the-broader-attack-surface">#</a></h2>
+<p>SMB signing ensures that SMB traffic cannot be modified or impersonated by an untrusted intermediary. When signing is enabled and enforced, the server verifies the authenticity of the SMB client’s messages, preventing NTLM authentication from being relayed.</p>
+<p>When signing is not required, NTLM authentication received through poisoning techniques can be forwarded to SMB servers. Any endpoint that accepts unsigned SMB traffic becomes a potential pivot point for lateral movement.</p>
+<p>This weakness is not theoretical. It is a predictable byproduct of:</p>
+<ul>
+<li>DHCPv6 poisoning redirecting authentication to a malicious host</li>
+<li>LLMNR, NBT-NS or mDNS poisoning impersonating requested names</li>
+<li>NTLM authentication being forwarded to SMB services lacking enforced signing</li>
+<li>…</li>
+</ul>
+<p>The intersection of these behaviours is what makes SMB signing essential.</p>
+<h2 id="observed-behaviour-during-analysis"><strong>Observed behaviour during analysis</strong><a hidden class="anchor" aria-hidden="true" href="#observed-behaviour-during-analysis">#</a></h2>
+<p>Responder was used in the supporting evidence to demonstrate how poisoned requests generate authentication attempts that can be forwarded to SMB. The tool captured incoming traffic and prepared it for relaying.</p>
+<p>The screenshot below show Responder collecting authentication requests that originate from hosts responding to poisoned network resolution mechanisms.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/ResponderSMB-1.png"></p>
+<p>These captured credentials were then forwarded to SMB endpoints using ntlmrelayx, showing how systems without SMB signing enabled accept and process authentication that did not originate from the legitimate source.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/InterceptingSMB-1.png"></p>
+<h2 id="relaying-to-smb-with-a-normal-user-account"><strong>Relaying to SMB with a normal user account</strong><a hidden class="anchor" aria-hidden="true" href="#relaying-to-smb-with-a-normal-user-account">#</a></h2>
+<p>When an ordinary domain user account was relayed, the target system accepted the authentication attempt. Access was granted according to the permissions defined for that account, validating that SMB endpoints without signing are susceptible even to low-privilege relays.</p>
+<p>The screenshot below demonstrates a successful SMB relay using a standard domain user identity.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBInterceptionShowcase-1.png"></p>
+<p>With this level of access, file shares become browsable and readable according to the user’s rights.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBRelayingShares-1.png"></p>
+<p>Although seemingly limited, such access often provides attackers with footholds, sensitive internal documentation or misconfigured administrative paths.</p>
+<h2 id="relaying-smb-authentication-as-a-domain-administrator"><strong>Relaying SMB authentication as a domain administrator</strong><a hidden class="anchor" aria-hidden="true" href="#relaying-smb-authentication-as-a-domain-administrator">#</a></h2>
+<p>Environments where SMB signing is disabled on critical systems present even more severe risks. In the evidence below, a domain administrator account was relayed to a system lacking SMB signing enforcement. The server accepted the authentication without challenge.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBAdminRelay-1.png"></p>
+<p><em>The screenshot shows ntlmrelayx establishing authenticated SMB access with domain administrator privileges.</em></p>
+<p>This elevated access enables a wide range of high-impact actions, including:</p>
+<h3 id="dumping-the-sam-database"><strong>Dumping the SAM database</strong><a hidden class="anchor" aria-hidden="true" href="#dumping-the-sam-database">#</a></h3>
+<p>Windows stores local password hashes in the Security Account Manager (SAM). With administrative SMB access, these values become retrievable. The extracted hashes include NT hashes, which can be used directly to authenticate to various Windows services. In such cases, the password does not need to be cracked for the account to be compromised.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBDumpSAM-1.png"></p>
+<h3 id="retrieving-lsa-secrets-and-cached-credentials"><strong>Retrieving LSA secrets and cached credentials</strong><a hidden class="anchor" aria-hidden="true" href="#retrieving-lsa-secrets-and-cached-credentials">#</a></h3>
+<p>The Local Security Authority (LSA) stores a range of sensitive values that include credentials used by services, scheduled tasks and system components. These LSA secrets may also contain cached domain logon data, which allows users to authenticate when domain controllers are unavailable.</p>
+<p>In some environments, LSA secrets can include plaintext or partially recoverable passwords. This behaviour results from a separate underlying issue that falls outside the scope of this blog and will be addressed in a future post.</p>
+<p>The ability to extract LSA secrets and cached credentials illustrates the impact of gaining administrative SMB access on systems where SMB signing is not enforced.</p>
+<p><img alt="alt text" loading="lazy" src="/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/SMBDumpLSA-1.png"></p>
+<h3 id="remote-code-execution-over-smb"><strong>Remote code execution over SMB</strong><a hidden class="anchor" aria-hidden="true" href="#remote-code-execution-over-smb">#</a></h3>
+<p>Administrative SMB access allows command execution on the target system using standard operating system functions when signing is not enforced.</p>
+<p>These outcomes highlight the severity of NTLM relaying when SMB signing is absent. The attack path requires no credentials and no exploitation of software vulnerabilities. It relies solely on predictable network behaviour and missing protocol integrity. The examples shown above, such as share access, SAM extraction, LSA secret retrieval and remote code execution, represent only a subset of what becomes possible once SMB access is achieved through relaying. A wide range of additional actions can be performed across the environment, depending on the privileges of the relayed account and the configuration of the target systems. These examples are included to illustrate the impact, not to suggest that they are the only consequences of disabled SMB signing.</p>
+<h2 id="why-smb-signing-remains-essential"><strong>Why SMB signing remains essential</strong><a hidden class="anchor" aria-hidden="true" href="#why-smb-signing-remains-essential">#</a></h2>
+<p>The role of SMB signing is to enforce message integrity and protect NTLM authentication from redirection. When signing is fully enforced:</p>
+<ul>
+<li>NTLM authentication cannot be relayed</li>
+<li>SMB traffic cannot be modified or forged</li>
+<li>The attacker must control legitimate credentials</li>
+<li>Poisoning techniques lose their leverage over relaying SMB access</li>
+</ul>
+<p>Without signing, SMB becomes one of the most powerful pivot points available in a Windows domain.</p>
+<p>The issue persists because:</p>
+<ul>
+<li>Many legacy systems still disable signing for compatibility</li>
+<li>Administrators assume relaying attacks require rare conditions</li>
+<li>IPv6 poisoning and LLMNR/NBT-NS/mDNS poisoning are often overlooked</li>
+<li>NTLM remains widely enabled for backward compatibility</li>
+</ul>
+<p>The combination makes SMB signing failures both common and dangerous.</p>
+<h2 id="mitigation-strategies"><strong>Mitigation strategies</strong><a hidden class="anchor" aria-hidden="true" href="#mitigation-strategies">#</a></h2>
+<h3 id="enable-and-enforce-smb-signing"><strong>Enable and enforce SMB signing</strong><a hidden class="anchor" aria-hidden="true" href="#enable-and-enforce-smb-signing">#</a></h3>
+<p>SMB signing should be enabled and strictly enforced on both domain controllers and servers. Enforcing signing ensures that SMB messages cannot be altered or replayed by an intermediary, effectively preventing NTLM authentication from being relayed to SMB services. Systems that only have signing set to “supported” remain vulnerable, since they will still accept unsigned connections from clients that do not negotiate signing. Full enforcement is therefore essential to guarantee message integrity across the environment and to close one of the most common lateral movement paths in Windows networks.</p>
+<p>SMB signing can be enforced centrally through Group Policy, allowing organisations to apply consistent protection across all systems. Configuring domain controllers and servers through GPO ensures that no machine remains accidentally exposed due to local configuration drift or legacy settings.</p>
+<h2 id="conclusion"><strong>Conclusion</strong><a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>SMB signing is a fundamental security control in Windows environments. Its absence allows NTLM authentication to be relayed to SMB services, enabling unauthorised access ranging from limited file share browsing to full domain administrative takeover.</p>
+<p>When combined with poisoning techniques previously outlined in discussions of DHCPv6, LLMNR, NBT-NS and mDNS, the risk becomes systemic. These protocols redirect authentication traffic, and unsigned SMB endpoints accept it without verification.</p>
+<p>The evidence presented demonstrates how both normal users and domain administrators can be relayed to vulnerable SMB services, leading to credential extraction, lateral movement and remote code execution. Enforcing SMB signing across all systems closes one of the most consistent and impactful attack paths in enterprise networks.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/windows/">Windows</a></li>
+      <li><a href="http://localhost:1313/tags/security/">Security</a></li>
+      <li><a href="http://localhost:1313/tags/active-directory/">Active Directory</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">
+    <span class="title">Next »</span>
+    <br>
+    <span>LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/"> </a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a><script src="https://unpkg.com/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('.post-content img', {
+    margin: 24,
+    background: '#000'
+  })
+</script>
+
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

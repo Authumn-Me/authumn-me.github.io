@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks |  </title>
+<meta name="keywords" content="windows, security, active-directory, pentesting">
+<meta name="description" content="Windows networks often operate primarily on IPv4, yet IPv6 remains enabled and active on nearly all Windows systems by default. Even in environments where IPv6 is not intentionally deployed, Windows continues to search for configuration sources that provide IPv6 parameters. This behaviour introduces an attack surface that is frequently underestimated: DHCPv6 poisoning.
+This technique has been known in the security community for years and continues to appear in modern assessments. Evidence collected for this blog uses mitm6 to demonstrate how easily Windows clients can be influenced when IPv6 behaviour is not monitored or controlled.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d844a6839c6beffbedef2bb2a7f6b667057e21d3bc875c52f15b570b1bf19055.css" integrity="sha256-2ESmg5xr7/vt7yuyp/a2ZwV&#43;IdO8h1xS8VtXCxvxkFU=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="  (Alt + H)">
+                <img src="http://localhost:1313/images/logo.png" alt="" aria-label="logo"
+                    height="152"> </a>
+            <div class="logo-switches">
+                <button id="theme-toggle" hidden=true accesskey="t" title="(Alt + T)" aria-label="Toggle theme" >
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="whoami">
+                    <span>whoami</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blogs">
+                    <span>Blogs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks
+    </h1>
+    <div class="post-meta"><span title='2025-12-26 00:00:00 +0000 UTC'>December 26, 2025</span>&nbsp;·&nbsp;<span>5 min</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Windows networks often operate primarily on IPv4, yet IPv6 remains enabled and active on nearly all Windows systems by default. Even in environments where IPv6 is not intentionally deployed, Windows continues to search for configuration sources that provide IPv6 parameters. This behaviour introduces an attack surface that is frequently underestimated: DHCPv6 poisoning.</p>
+<p>This technique has been known in the security community for years and continues to appear in modern assessments. Evidence collected for this blog uses mitm6 to demonstrate how easily Windows clients can be influenced when IPv6 behaviour is not monitored or controlled.</p>
+<h2 id="how-dhcpv6-poisoning-works"><strong>How DHCPv6 poisoning works</strong><a hidden class="anchor" aria-hidden="true" href="#how-dhcpv6-poisoning-works">#</a></h2>
+<p>In many enterprise environments no official DHCPv6 infrastructure is present. Windows clients therefore rely on automatic IPv6 configuration and remain receptive to any DHCPv6 responder on the network. Since the protocol does not enforce authentication in typical deployments, a malicious system can supply:</p>
+<ul>
+<li>A rogue IPv6 DNS server</li>
+<li>A manipulated DNS suffix</li>
+<li>IPv6 routes that divert traffic</li>
+</ul>
+<p>The client silently accepts this configuration and immediately begins using the supplied DNS and routing information. The change occurs automatically, without user interaction and without visible warnings.</p>
+<h2 id="observed-behaviour-during-analysis"><strong>Observed behaviour during analysis</strong><a hidden class="anchor" aria-hidden="true" href="#observed-behaviour-during-analysis">#</a></h2>
+<p>In the evidence below, mitm6 is being used to illustrate how Windows clients begin sending DNS and authentication related traffic to the supplied IPv6 addresses after receiving poisoned DHCPv6 information. Even in networks that depend exclusively on IPv4, IPv6 remains active enough to influence critical name resolution and connection behaviour.</p>
+<p><img alt="Sending spoofed messages" loading="lazy" src="/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/SpoofedMessages.png"></p>
+<p>The effect is immediate: system processes enhance the level of interaction with the injected IPv6 DNS server, creating opportunities for traffic redirection and protocol level manipulation. This demonstrates that DHCPv6 poisoning serves as an effective foundation for broader interception techniques.</p>
+<h2 id="impact-on-intercepted-authentication-traffic"><strong>Impact on intercepted authentication traffic</strong><a hidden class="anchor" aria-hidden="true" href="#impact-on-intercepted-authentication-traffic">#</a></h2>
+<p>DHCPv6 poisoning does more than redirect name resolution. Once a client adopts attacker supplied IPv6 configuration, authentication flows that rely on NTLM become exposed. This includes NetNTLMv2 and, in certain legacy environments, NetNTLMv1 or related challenge response exchanges. These authentication pairs do not reveal plaintext credentials, yet they can be used in offline password brute forcing attempts, since domain lockout policies do not apply to offline verification.</p>
+<p>The exposure of these challenge response samples demonstrates that DHCPv6 poisoning is not limited to traffic manipulation but also introduces a credential security risk. Weak or reused passwords become significantly more vulnerable under these conditions.</p>
+<p>The image below shows a NetNTLMv2 challenge response pair captured after the poisoned IPv6 configuration redirected authentication traffic. Such intercepted NetNTLMv2 samples can subsequently be subjected to offline password-guessing techniques, for example with dedicated cracking tools such as Hashcat, since domain lockout policies do not apply outside the authentication infrastructure.</p>
+<p><img alt="Sending spoofed messages" loading="lazy" src="/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/SpoofedMessages-1.png">
+<img alt="alt text" loading="lazy" src="/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/InterceptingHash.png"></p>
+<p>The final screenshot illustrates an offline password-cracking attempt performed on the intercepted NetNTLMv2 sample using Hashcat. The password was recovered in a short amount of time, demonstrating how weak or reused credentials can be compromised once a challenge-response pair has been obtained. With a successfully cracked password, an attacker would be able to authenticate as the affected user within Active Directory, highlighting the broader security impact that originates from DHCPv6 poisoning.</p>
+<p><img alt="Cracking the hash with hashcat" loading="lazy" src="/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/CrackingWitHashcat.png"></p>
+<h2 id="why-dhcpv6-poisoning-matters"><strong>Why DHCPv6 poisoning matters</strong><a hidden class="anchor" aria-hidden="true" href="#why-dhcpv6-poisoning-matters">#</a></h2>
+<p>The strength of this attack lies in its simplicity and its largely invisible nature. It requires no privileged position between the client and legitimate servers, often causes no disruption to existing services and in most cases produces little to no visible impact on the user&rsquo;s workflow. The Windows networking stack accepts the malicious configuration and proceeds to use it as though it were legitimate.</p>
+<p>DHCPv6 poisoning is therefore a foundational technique. It enables the conditions required for other well known exploitation paths such as SMB relaying, LDAP or LDAPS relaying and certificate based escalation through ADCS. These follow-up scenarios will be examined in a future blog, as the focus here remains on the poisoning mechanism itself.</p>
+<h2 id="environmental-factors-that-contribute-to-exploitation"><strong>Environmental factors that contribute to exploitation</strong><a hidden class="anchor" aria-hidden="true" href="#environmental-factors-that-contribute-to-exploitation">#</a></h2>
+<p>Several characteristics of typical Windows networks make DHCPv6 poisoning consistently viable:</p>
+<ul>
+<li>IPv6 is enabled by default, even when unused</li>
+<li>DHCPv6 is often not configured or monitored</li>
+<li>Windows automatically trusts IPv6 configuration sources</li>
+<li>No authentication exists for standard DHCPv6 traffic</li>
+</ul>
+<p>This combination allows an attacker to influence client behaviour without elevated access and without the need for deep network placement.</p>
+<h2 id="mitigation-strategies"><strong>Mitigation strategies</strong><a hidden class="anchor" aria-hidden="true" href="#mitigation-strategies">#</a></h2>
+<p>Reducing or eliminating the risks associated with DHCPv6 poisoning involves a combination of network level and host level measures.</p>
+<p><strong>Disable IPv6 when operationally unnecessary</strong></p>
+<p>If IPv6 is not part of the organisation’s network architecture, it can be disabled under controlled conditions. This prevents Windows clients from requesting or accepting IPv6 configuration.</p>
+<p><strong>DHCPv6 Guard and DHCPv6 Snooping on network switches</strong></p>
+<p>Many enterprise switches support DHCPv6 Guard or DHCPv6 Snooping.</p>
+<p>These features differentiate between trusted and untrusted ports and inspect DHCPv6 traffic at the switch level. Rogue DHCPv6 responses originating from untrusted interfaces are blocked before reaching clients. This creates a strong enforcement boundary that prevents malicious configuration from entering the network.</p>
+<p><strong>Monitor for unsolicited IPv6 activity</strong></p>
+<p>Alerts triggered by unexpected DHCPv6 advertisements, rogue IPv6 DNS servers or abnormal IPv6 traffic can reveal poisoning attempts at an early stage.</p>
+<p><strong>Protocol hardening for later attack stages</strong></p>
+<p>Controls such as SMB signing, LDAP signing, channel binding and ADCS hardening significantly reduce the impact of any authentication traffic that becomes exposed as a result of DHCPv6 poisoning. These measures will be discussed in detail in the upcoming follow up blog focused on relay techniques.</p>
+<h2 id="conclusion"><strong>Conclusion</strong><a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>DHCPv6 poisoning highlights how default IPv6 behaviour in Windows environments can be leveraged to redirect key network flows and expose authentication data, even in networks that rely almost entirely on IPv4. The technique remains effective because of unauthenticated IPv6 configuration, lack of DHCPv6 infrastructure and the silent nature of Windows’ acceptance of IPv6 parameters.</p>
+<p>While this blog concentrates on the poisoning mechanism and its direct consequences, the broader implications become apparent when the intercepted traffic is combined with NTLM based relaying toward services such as SMB, LDAP, LDAPS or ADCS. These scenarios will be examined in a future post to provide a complete picture of how a simple IPv6 configuration weakness can escalate into more extensive compromise paths.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/windows/">Windows</a></li>
+      <li><a href="http://localhost:1313/tags/security/">Security</a></li>
+      <li><a href="http://localhost:1313/tags/active-directory/">Active Directory</a></li>
+      <li><a href="http://localhost:1313/tags/pentesting/">Pentesting</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure</span>
+  </a>
+  <a class="next" href="http://localhost:1313/blog/rdp-big-brother-is-watching-you/">
+    <span class="title">Next »</span>
+    <br>
+    <span>RDP - Big Brother is watching</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/"> </a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a><script src="https://unpkg.com/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+<script>
+  mediumZoom('.post-content img', {
+    margin: 24,
+    background: '#000'
+  })
+</script>
+
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

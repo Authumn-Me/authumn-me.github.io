@@ -3,30 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/tags/active-directory/</loc>
-    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blogs/</loc>
-    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/blog/</loc>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blogs/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/</loc>
+    <loc>http://localhost:1313/tags/security/</loc>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</loc>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/windows/</loc>
+    <lastmod>2025-12-28T08:10:36+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/llmnr-nbt-ns-and-mdns-legacy-name-resolution-protocols-that-open-the-door-to-credential-exposure/</loc>
     <lastmod>2025-12-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/pentesting/</loc>
     <lastmod>2025-12-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/security/</loc>
-    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/windows/</loc>
-    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blogs/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</loc>
+    <loc>http://localhost:1313/blog/dhcpv6-poisoning-an-overlooked-weakness-in-windows-networks/</loc>
     <lastmod>2025-12-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/forensics/</loc>
@@ -35,7 +38,7 @@
     <loc>http://localhost:1313/tags/rdp/</loc>
     <lastmod>2025-12-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blogs/rdp-big-brother-is-watching-you/</loc>
+    <loc>http://localhost:1313/blog/rdp-big-brother-is-watching-you/</loc>
     <lastmod>2025-12-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>

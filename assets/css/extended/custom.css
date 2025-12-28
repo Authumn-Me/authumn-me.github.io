@@ -22,3 +22,6 @@
   transform: translateY(25px);
 }
 
+.post-content p {
+  text-align: justify;
+}

@@ -10,9 +10,9 @@
     <atom:link href="http://localhost:1313/tags/forensics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RDP - Big Brother is watching</title>
-      <link>http://localhost:1313/blogs/rdp-big-brother-is-watching-you/</link>
+      <link>http://localhost:1313/blog/rdp-big-brother-is-watching-you/</link>
       <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/blogs/rdp-big-brother-is-watching-you/</guid>
+      <guid>http://localhost:1313/blog/rdp-big-brother-is-watching-you/</guid>
       <description>&lt;p&gt;Remote Desktop has been a standard tool for system administrators and anyone who needs to manage a server or workstation from a distance for many years. During a session far more happens behind the scenes than most people realise. Windows quietly stores small fragments of the remote screen, a mechanism known as the RDP Bitmap Cache.&lt;/p&gt;
 &lt;p&gt;Many users assume that once an RDP session is closed, anything that appeared on the screen disappears as well. In reality a portion of that visual data remains on the local machine. Forensic investigators consider this a valuable source of information, and in security-focused environments it is important to understand what this cache contains, how it works and which risks it introduces.&lt;/p&gt;</description>
     </item>
