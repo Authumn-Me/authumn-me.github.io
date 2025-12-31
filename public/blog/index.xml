@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Blogs on  </title>
+    <title>Blogs on Authumn’s Notebook</title>
     <link>http://localhost:1313/blog/</link>
-    <description>Recent content in Blogs on  </description>
+    <description>Recent content in Blogs on Authumn’s Notebook</description>
     <generator>Hugo -- 0.153.2</generator>
     <language>nl-be</language>
-    <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 30 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AS-REP Roasting: Exploiting Kerberos Pre-Authentication Misconfigurations</title>
+      <link>http://localhost:1313/blog/as-rep-roasting-exploiting-kerberos-pre-authentication-misconfigurations/</link>
+      <pubDate>Tue, 30 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/as-rep-roasting-exploiting-kerberos-pre-authentication-misconfigurations/</guid>
+      <description>&lt;p&gt;Kerberos is the primary authentication protocol used in Active Directory environments. It provides secure, ticket-based authentication and is designed to prevent credential exposure over the network. Like many security mechanisms, its effectiveness depends heavily on correct configuration. One of the most well-known Kerberos-related attack techniques that abuses misconfiguration rather than protocol flaws is AS-REP Roasting.&lt;/p&gt;
+&lt;p&gt;AS-REP Roasting is often discussed alongside Kerberoasting. While Kerberoasting targets service accounts with Service Principal Names, AS-REP Roasting focuses on user accounts that have Kerberos pre-authentication disabled. This single configuration choice can expose password-derived data that allows offline password attacks without interacting further with the domain.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Kerberoasting: How Service Accounts Become a Silent Credential Exposure Risk</title>
       <link>http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/</link>

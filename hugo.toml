@@ -1,6 +1,6 @@
 baseURL = "https://authumn-me.github.io/"
 languageCode = "nl-be"
-title = " "
+title = "Authumn’s Notebook"
 theme = "PaperMod"
 
 [params]
@@ -11,11 +11,9 @@ theme = "PaperMod"
   label.icon = "/images/logo.png"
   label.iconHeight = 152
   disableImageProcessing = true
-  favicon = "/icons/favicon.ico"
-  favicon16x16 = "/icons/favicon-16x16.png"
-  favicon32x32 = "/icons/favicon-32x32.png"
-  apple_touch_icon = "/icons/apple-touch-icon.png"
-  safari_pinned_tab = "/icons/favicon-32x32.png"
+  favicon = "/favicon.ico"
+  apple_touch_icon = "/apple-touch-icon.png"
+
 
 [menu]
   [[menu.main]]

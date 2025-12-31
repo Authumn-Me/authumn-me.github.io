@@ -3,31 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/tags/active-directory/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/as-rep-roasting-exploiting-kerberos-pre-authentication-misconfigurations/</loc>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/blog/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/kerberos/</loc>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/security/</loc>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/windows/</loc>
+    <lastmod>2025-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/security/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/windows/</loc>
-    <lastmod>2025-12-28T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/signing/</loc>
+    <lastmod>2025-12-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</loc>
     <lastmod>2025-12-27T00:00:00+00:00</lastmod>

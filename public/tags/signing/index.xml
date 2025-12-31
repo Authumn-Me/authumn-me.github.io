@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Signing on Authumn’s Notebook</title>
+    <link>http://localhost:1313/tags/signing/</link>
+    <description>Recent content in Signing on Authumn’s Notebook</description>
+    <generator>Hugo -- 0.153.2</generator>
+    <language>nl-be</language>
+    <lastBuildDate>Sat, 27 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/signing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement</title>
+      <link>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</link>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/smb-signing-a-critical-control-against-ntlm-relaying-and-lateral-movement/</guid>
+      <description>&lt;p&gt;Server Message Block (SMB) is one of the most fundamental protocols in Windows environments. It provides file sharing, remote management and a range of operating system functions that depend on integrity and trust. When SMB signing is not enforced, NTLM authentication can be relayed to SMB endpoints, allowing unauthorised access to systems that accept unsigned connections. This behaviour forms the basis of several real-world attack paths and continues to appear in security assessments.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
