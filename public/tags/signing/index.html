@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/tags/signing/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bdda243792cc9d4a90f2243770c640f1d703bd7252aa3bc0fa583d552afb8c1b.css" integrity="sha256-vdokN5LMnUqQ8iQ3cMZA8dcDvXJSqjvA&#43;lg9VSr7jBs=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.12fe53f86c18b8f1b9022f785825d05a87575f72f414075af531dd655a9bba67.css" integrity="sha256-Ev5T&#43;GwYuPG5Ai94WCXQWodXX3L0FAda9THdZVqbumc=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -91,6 +91,23 @@
     Signing
   </h1>
 </header>
+
+<article class="post-entry tag-entry"> 
+<figure class="entry-cover">
+            <img loading="lazy" src="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/cover.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Active Directory relies heavily on LDAP and LDAPS for authentication, directory queries and system management. These protocols underpin a significant portion of domain operations, including user lookups, group membership resolution, computer account provisioning and policy distribution. When LDAP signing and LDAPS channel binding are not enforced, NTLM authentication can be silently relayed to directory services, creating opportunities for unauthorised changes within the domain.
+Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LLMNR, NBT-NS and mDNS) highlight how Windows hosts can be deceived into sending authentication traffic to a rogue endpoint. LDAP services become natural relay targets when these fallback mechanisms remain active. Without LDAP signing or proper LDAPS channel binding, directories may accept authentication that did not originate from the legitimate client, enabling a range of impactful actions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-12-28 00:00:00 +0000 UTC'>December 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation" href="http://localhost:1313/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/"></a>
+</article>
 
 <article class="post-entry tag-entry"> 
 <figure class="entry-cover">
