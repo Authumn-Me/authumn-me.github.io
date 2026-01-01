@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
 <title>LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation | Authumn’s Notebook</title>
-<meta name="keywords" content="windows, security, active directory">
+<meta name="keywords" content="windows, security, active directory, signing">
 <meta name="description" content="Active Directory relies heavily on LDAP and LDAPS for authentication, directory queries and system management. These protocols underpin a significant portion of domain operations, including user lookups, group membership resolution, computer account provisioning and policy distribution. When LDAP signing and LDAPS channel binding are not enforced, NTLM authentication can be silently relayed to directory services, creating opportunities for unauthorised changes within the domain.
 Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LLMNR, NBT-NS and mDNS) highlight how Windows hosts can be deceived into sending authentication traffic to a rogue endpoint. LDAP services become natural relay targets when these fallback mechanisms remain active. Without LDAP signing or proper LDAPS channel binding, directories may accept authentication that did not originate from the legitimate client, enabling a range of impactful actions.">
 <meta name="author" content="">
@@ -165,7 +165,8 @@ Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LL
     <ul class="post-tags">
       <li><a href="http://localhost:1313/tags/windows/">Windows</a></li>
       <li><a href="http://localhost:1313/tags/security/">Security</a></li>
-      <li><a href="http://localhost:1313/tags/active-directory/">Active-Directory</a></li>
+      <li><a href="http://localhost:1313/tags/active-directory/">Active Directory</a></li>
+      <li><a href="http://localhost:1313/tags/signing/">Signing</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="http://localhost:1313/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/">
@@ -185,7 +186,7 @@ Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LL
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Authumn’s Notebook</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Authumn’s Notebook</a></span> · 
 
     <span>
         Powered by

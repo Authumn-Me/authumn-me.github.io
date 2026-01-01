@@ -2,7 +2,7 @@
 
 title : 'LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation'
 date : '2025-12-28'
-tags: ["windows", "security", "active directory"]
+tags: ["windows", "security", "active directory", "signing"]
 cover:
   image: "cover.png"
   relative: true
