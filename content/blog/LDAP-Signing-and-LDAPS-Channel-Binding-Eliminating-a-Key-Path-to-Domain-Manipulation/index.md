@@ -111,7 +111,10 @@ By applying this setting, all LDAP communication with domain controllers is cons
 ![](EnableLdapSigning.png)
 
 ### **Enforce LDAPS channel binding**
-To enforce channel binding, configure the policy “Domain controller: LDAP server channel binding token requirements” to Always. It is important that this setting is not left at When supported. When configured as When supported, clients that do not support channel binding are still allowed to authenticate without it, leaving a window open for abuse.
+
+LDAPS channel binding can be enforced by configuring the policy “Domain controller: LDAP server channel binding token requirements” and setting it to Always. This guarantees that channel binding is required for all LDAPS authentication attempts.
+
+It is important that this policy is not configured as When supported, as this setting still allows authentication without channel binding for certain clients. Setting the policy to Always ensures consistent enforcement of channel binding for all supported connections.
 
 ![](LDAPChannelBinding.png)
 
