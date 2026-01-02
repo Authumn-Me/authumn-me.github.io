@@ -104,11 +104,16 @@ LDAP and LDAPS are central to domain operations. Ensuring the integrity of these
 
 ### **Enforce LDAP signing**
 
-LDAP signing must be set to “Required” on all domain controllers. The default “None” or “Negotiate” settings leave directories exposed to NTLM relaying.
+LDAP signing can be enforced by configuring the policy “Domain controller: LDAP server signing requirements” and setting it to Require signing. This configuration ensures that domain controllers only accept LDAP connections that are cryptographically signed by the client.
+
+By applying this setting, all LDAP communication with domain controllers is consistently protected, and unsigned LDAP connections are no longer permitted. This provides a clear and uniform enforcement of LDAP signing across the environment.
+
+![](EnableLdapSigning.png)
 
 ### **Enforce LDAPS channel binding**
+To enforce channel binding, configure the policy “Domain controller: LDAP server channel binding token requirements” to Always. It is important that this setting is not left at When supported. When configured as When supported, clients that do not support channel binding are still allowed to authenticate without it, leaving a window open for abuse.
 
-Channel binding ensures that authentication is tied to the TLS session and prevents relaying into LDAPS endpoints.
+![](LDAPChannelBinding.png)
 
 ## **Conclusion**
 
