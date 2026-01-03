@@ -124,7 +124,6 @@ Kerberoasting does not exploit a vulnerability in Kerberos. Instead, it abuses l
 <p>Kerberoasting is only possible when a service account has an SPN assigned. SPNs bind a service instance to an account and enable Kerberos authentication for that service.</p>
 <p>This screenshot below  the configration of a service account with an SPN confshowsigured, making it eligible for Kerberos service ticket requests.</p>
 <p><img loading="lazy" src="/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/SPN-Setup.png"></p>
-<p><em>Image from: <a href="https://en.hackndo.com/assets/uploads/2019/02/spn.png">hackndo</a></em></p>
 <p>While SPNs are required for Kerberos to function correctly, they also define the attack surface for Kerberoasting. Poorly managed SPNs combined with weak passwords create a predictable exposure point.</p>
 <h2 id="why-kerberoasting-is-difficult-to-detect"><strong>Why Kerberoasting is difficult to detect</strong><a hidden class="anchor" aria-hidden="true" href="#why-kerberoasting-is-difficult-to-detect">#</a></h2>
 <p>Kerberoasting uses legitimate Kerberos functionality. Ticket requests are normal domain operations and do not generate obvious security alerts. The offline password recovery phase happens entirely outside the domain and leaves no trace in authentication logs.</p>

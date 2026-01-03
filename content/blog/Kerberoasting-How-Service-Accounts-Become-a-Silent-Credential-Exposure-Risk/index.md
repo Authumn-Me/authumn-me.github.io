@@ -65,11 +65,6 @@ This screenshot below  the configration of a service account with an SPN confsho
 
 ![](SPN-Setup.png)
 
-*Image from: [hackndo][1]*
-
-[1]: https://en.hackndo.com/assets/uploads/2019/02/spn.png
-
-
 While SPNs are required for Kerberos to function correctly, they also define the attack surface for Kerberoasting. Poorly managed SPNs combined with weak passwords create a predictable exposure point.
 
 ## **Why Kerberoasting is difficult to detect**

@@ -93,7 +93,7 @@ Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LL
     <h1 class="post-title entry-hint-parent">
       LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation
     </h1>
-    <div class="post-meta"><span title='2025-12-28 00:00:00 +0000 UTC'>December 28, 2025</span>&nbsp;·&nbsp;<span>5 min</span>
+    <div class="post-meta"><span title='2025-12-28 00:00:00 +0000 UTC'>December 28, 2025</span>&nbsp;·&nbsp;<span>6 min</span>
 
 </div>
   </header> 
@@ -151,9 +151,13 @@ Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LL
 <p>LDAP and LDAPS are central to domain operations. Ensuring the integrity of these protocols is critical for preventing silent privilege escalation.</p>
 <h2 id="mitigation-strategies"><strong>Mitigation strategies</strong><a hidden class="anchor" aria-hidden="true" href="#mitigation-strategies">#</a></h2>
 <h3 id="enforce-ldap-signing"><strong>Enforce LDAP signing</strong><a hidden class="anchor" aria-hidden="true" href="#enforce-ldap-signing">#</a></h3>
-<p>LDAP signing must be set to “Required” on all domain controllers. The default “None” or “Negotiate” settings leave directories exposed to NTLM relaying.</p>
+<p>LDAP signing can be enforced by configuring the policy “Domain controller: LDAP server signing requirements” and setting it to Require signing. This configuration ensures that domain controllers only accept LDAP connections that are cryptographically signed by the client.</p>
+<p>By applying this setting, all LDAP communication with domain controllers is consistently protected, and unsigned LDAP connections are no longer permitted. This provides a clear and uniform enforcement of LDAP signing across the environment.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/EnableLdapSigning.png"></p>
 <h3 id="enforce-ldaps-channel-binding"><strong>Enforce LDAPS channel binding</strong><a hidden class="anchor" aria-hidden="true" href="#enforce-ldaps-channel-binding">#</a></h3>
-<p>Channel binding ensures that authentication is tied to the TLS session and prevents relaying into LDAPS endpoints.</p>
+<p>LDAPS channel binding can be enforced by configuring the policy “Domain controller: LDAP server channel binding token requirements” and setting it to Always. This guarantees that channel binding is required for all LDAPS authentication attempts.</p>
+<p>It is important that this policy is not configured as When supported, as this setting still allows authentication without channel binding for certain clients. Setting the policy to Always ensures consistent enforcement of channel binding for all supported connections.</p>
+<p><img loading="lazy" src="/blog/ldap-signing-and-ldaps-channel-binding-eliminating-a-key-path-to-domain-manipulation/LDAPChannelBinding.png"></p>
 <h2 id="conclusion"><strong>Conclusion</strong><a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
 <p>LDAP signing and LDAPS channel binding are essential for ensuring that Active Directory does not accept authentication that has been silently redirected through poisoning techniques. Without these controls, authentication captured via DHCPv6 poisoning, LLMNR, NBT-NS or mDNS can be relayed to directory services and processed as if it were legitimate. The result ranges from metadata extraction to object creation, privilege assignment and potential domain compromise.</p>
 <p>A future post will explore misconfigurations and authentication behaviours that result in plaintext or recoverable credentials within LDAP-related operations, extending the discussion on credential exposure beyond the relay mechanisms described here.</p>
