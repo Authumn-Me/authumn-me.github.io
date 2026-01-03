@@ -122,7 +122,7 @@ Kerberoasting does not exploit a vulnerability in Kerberos. Instead, it abuses l
 <p>This combination of offline password exposure and excessive privileges makes poorly managed service accounts a high-value target within Active Directory environments.</p>
 <h2 id="service-principal-names-as-the-root-cause"><strong>Service Principal Names as the root cause</strong><a hidden class="anchor" aria-hidden="true" href="#service-principal-names-as-the-root-cause">#</a></h2>
 <p>Kerberoasting is only possible when a service account has an SPN assigned. SPNs bind a service instance to an account and enable Kerberos authentication for that service.</p>
-<p>This screenshot below  the configration of a service account with an SPN confshowsigured, making it eligible for Kerberos service ticket requests.</p>
+<p>The screenshot below shows the configration of a service account with an SPN configured, making it eligible for Kerberos service ticket requests.</p>
 <p><img loading="lazy" src="/blog/kerberoasting-how-service-accounts-become-a-silent-credential-exposure-risk/SPN-Setup.png"></p>
 <p>While SPNs are required for Kerberos to function correctly, they also define the attack surface for Kerberoasting. Poorly managed SPNs combined with weak passwords create a predictable exposure point.</p>
 <h2 id="why-kerberoasting-is-difficult-to-detect"><strong>Why Kerberoasting is difficult to detect</strong><a hidden class="anchor" aria-hidden="true" href="#why-kerberoasting-is-difficult-to-detect">#</a></h2>
@@ -160,7 +160,7 @@ Kerberoasting does not exploit a vulnerability in Kerberos. Instead, it abuses l
     <ul class="post-tags">
       <li><a href="http://localhost:1313/tags/windows/">Windows</a></li>
       <li><a href="http://localhost:1313/tags/security/">Security</a></li>
-      <li><a href="http://localhost:1313/tags/active-directory/">Active Directory</a></li>
+      <li><a href="http://localhost:1313/tags/active-directory/">Active-Directory</a></li>
       <li><a href="http://localhost:1313/tags/kerberos/">Kerberos</a></li>
     </ul>
 <nav class="paginav">

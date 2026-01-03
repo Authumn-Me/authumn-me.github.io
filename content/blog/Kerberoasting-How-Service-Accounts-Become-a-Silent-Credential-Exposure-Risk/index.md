@@ -61,7 +61,7 @@ This combination of offline password exposure and excessive privileges makes poo
 
 Kerberoasting is only possible when a service account has an SPN assigned. SPNs bind a service instance to an account and enable Kerberos authentication for that service.
 
-This screenshot below  the configration of a service account with an SPN confshowsigured, making it eligible for Kerberos service ticket requests.
+The screenshot below shows the configration of a service account with an SPN configured, making it eligible for Kerberos service ticket requests.
 
 ![](SPN-Setup.png)
 
