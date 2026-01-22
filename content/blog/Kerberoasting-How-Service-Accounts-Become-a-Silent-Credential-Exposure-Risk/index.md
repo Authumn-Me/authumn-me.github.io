@@ -3,6 +3,7 @@
 title : 'Kerberoasting: How Service Accounts Become a Silent Credential Exposure Risk'
 date : '2025-12-28'
 tags: ["windows", "security", "active directory", "kerberos"]
+draft: true
 cover:
   image: "cover.png"
   relative: true
