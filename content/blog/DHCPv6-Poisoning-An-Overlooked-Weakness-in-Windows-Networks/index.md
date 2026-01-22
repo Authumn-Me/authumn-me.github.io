@@ -1,9 +1,9 @@
 ---
 
 title : 'DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks'
-date : '2025-12-26'
-tags: ["windows", "security", "active-directory", "pentesting"]
-draft: false
+date : '2025-12-25'
+tags: ["windows", "security", "active-directory", "poisoning"]
+draft: true
 cover:
   image: "Cover.png"
   relative: true
