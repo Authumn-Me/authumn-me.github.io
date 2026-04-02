@@ -2,7 +2,7 @@
 title: "RDP - Big Brother is watching"
 date: 2025-12-09
 tags: ["rdp", "forensics", "windows", "security", "active directory"]
-draft: true
+draft: false
 cover:
   image: "cover.png"
   alt: "RDP bitmap cache artefacts"
