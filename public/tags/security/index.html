@@ -105,7 +105,7 @@
 AS-REP Roasting is often discussed alongside Kerberoasting. While Kerberoasting targets service accounts with Service Principal Names, AS-REP Roasting focuses on user accounts that have Kerberos pre-authentication disabled. This single configuration choice can expose password-derived data that allows offline password attacks without interacting further with the domain.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-12-30 00:00:00 +0000 UTC'>December 30, 2025</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <footer class="entry-footer"><span title='2026-01-22 00:00:00 +0000 UTC'>January 22, 2026</span>&nbsp;·&nbsp;<span>7 min</span></footer>
   <a class="entry-link" aria-label="post link to AS-REP Roasting: Exploiting Kerberos Pre-Authentication Misconfigurations" href="http://localhost:1313/blog/as-rep-roasting-exploiting-kerberos-pre-authentication-misconfigurations/"></a>
 </article>
 
@@ -115,12 +115,6 @@ AS-REP Roasting is often discussed alongside Kerberoasting. While Kerberoasting 
 </figure>
   <header class="entry-header">
     <h2 class="entry-hint-parent">Kerberoasting: How Service Accounts Become a Silent Credential Exposure Risk
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h2>
   </header>
   <div class="entry-content">
@@ -138,12 +132,6 @@ Kerberoasting does not exploit a vulnerability in Kerberos. Instead, it abuses l
 </figure>
   <header class="entry-header">
     <h2 class="entry-hint-parent">LDAP Signing and LDAPS Channel Binding: Eliminating a Key Path to Domain Manipulation
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h2>
   </header>
   <div class="entry-content">
@@ -161,12 +149,6 @@ Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LL
 </figure>
   <header class="entry-header">
     <h2 class="entry-hint-parent">SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h2>
   </header>
   <div class="entry-content">
@@ -183,12 +165,6 @@ Earlier discussions on DHCPv6 poisoning and legacy name resolution protocols (LL
 </figure>
   <header class="entry-header">
     <h2 class="entry-hint-parent">LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h2>
   </header>
   <div class="entry-content">
@@ -206,12 +182,6 @@ Their design introduces predictable weaknesses. All three protocols accept respo
 </figure>
   <header class="entry-header">
     <h2 class="entry-hint-parent">DHCPv6 Poisoning: An Overlooked Weakness in Windows Networks
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h2>
   </header>
   <div class="entry-content">
@@ -229,12 +199,6 @@ This technique has been known in the security community for years and continues 
 </figure>
   <header class="entry-header">
     <h2 class="entry-hint-parent">RDP - Big Brother is watching
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
     </h2>
   </header>
   <div class="entry-content">
