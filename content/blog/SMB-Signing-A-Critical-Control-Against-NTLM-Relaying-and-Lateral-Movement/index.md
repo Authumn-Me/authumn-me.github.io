@@ -1,7 +1,7 @@
 ---
 
 title : 'SMB Signing: A Critical Control Against NTLM Relaying and Lateral Movement'
-date : '2025-12-27'
+date: '2025-12-27'
 tags: ["windows", "security", "active directory", "signing"]
 draft: false
 cover:

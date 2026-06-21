@@ -1,7 +1,7 @@
 ---
 
 title : 'LLMNR, NBT-NS and mDNS: Legacy Name Resolution Protocols That Open the Door to Credential Exposure'
-date : '2025-12-26'
+date: '2025-12-26'
 tags: ["windows", "security", "active-directory", "poisoning"]
 draft: false
 cover:
